@@ -1,0 +1,30 @@
+apiVersion: skaffold/v1beta2
+kind: Config
+build:
+  artifacts:
+  - image: changeme
+    context: .
+    docker: {}
+  tagPolicy:
+    envTemplate:
+      template: '{{.DOCKER_REGISTRY}}/mrpity/clean-k8s-resources:{{.VERSION}}'
+  local: {}
+deploy:
+  kubectl: {}
+profiles:
+- name: dev
+  build:
+    artifacts:
+    - docker: {}
+    tagPolicy:
+      envTemplate:
+        template: '{{.DOCKER_REGISTRY}}/mrpity/clean-k8s-resources:{{.DIGEST_HEX}}'
+    local: {}
+  deploy:
+    helm:
+      releases:
+      - name: clean-k8s-resources
+        chartPath: charts/clean-k8s-resources
+        setValueTemplates:
+          image.repository: '{{.DOCKER_REGISTRY}}/mrpity/clean-k8s-resources'
+          image.tag: '{{.DIGEST_HEX}}'
