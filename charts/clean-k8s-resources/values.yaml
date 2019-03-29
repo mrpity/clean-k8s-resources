@@ -3,8 +3,8 @@
 # Declare variables to be passed into your templates.
 replicaCount: 1
 image:
-  repository: draft
-  tag: dev
+  repository: 10.233.42.79:5000/mrpity/clean-k8s-resources
+  tag: 0.0.4
   pullPolicy: IfNotPresent
 service:
   name: clean-k8s-resources
